@@ -343,6 +343,7 @@ class Jqmain extends MY_Controller {
 		}
 		$data['list'] = $this->pufun->article_jion($table,$table2,'on a.id = b.uid',$psize,$offset);
         $this->db->where('id !=1');
+        $this->db->where('state',1);
 		$data['user'] = $this->pufun->showtable('admin_user');
 		// 加载分页库
 		$this->load->library('pagination');
