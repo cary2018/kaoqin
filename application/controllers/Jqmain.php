@@ -371,7 +371,7 @@ class Jqmain extends MY_Controller {
 		$data['user'] = $this->pu_fun->showtable('admin_user');
 		// 加载分页库
 		$this->load->library('pagination');
-		$config['base_url'] = './attend_user?uid='.$uid;  //分页URL
+		$config['base_url'] = './attend_user?uid='.$uid.'&start_date='.$start_date.'&end_date='.$end_date;  //分页URL
 		if($uid){$this->db->where('uid',$uid); }
         $this->db->where('uid !=1');
         if($start_date !='' && $end_date != '' )
