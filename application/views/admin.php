@@ -69,7 +69,7 @@
                             <td class="table-txt"><img src="<?php echo base_url().'img/';?><?php echo $val->state ==1 ? 'yes':'no'; ?>.gif"></td>
                             <td class="table-txt">
                                 <a href="<?php echo base_url()?>jqmain/edit?id=<?php echo $val->id;?>">修改</a>/
-                                <!--<a href="<?php echo base_url()?>jqmain/del?id=<?php echo $val->id;?>">删除</a>-->
+                                <a href="<?php echo base_url()?>jqmain/del?id=<?php echo $val->id;?>" onclick="javascript:if (confirm('确定删除吗？')) { return true;}else{return false;};">删除</a>
                             </td>
                         </tr>
                     <?php endforeach ;?>

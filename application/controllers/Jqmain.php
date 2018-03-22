@@ -4,16 +4,7 @@
  * Contact QQ  : 373889161($S$-memory)
  * Email       : 373889161@qq.com
  */
-defined('BASEPATH') OR exit('No direct script access allowed');
-date_default_timezone_set('PRC');
 class Jqmain extends MY_Controller {
-
-	public function __construct()
-	{
-		parent::__construct();
-		$this->load->Model('Public_Model','pufun');
-		$this->load->library('Get_password');
-	}
 
 	public function index()
 	{
@@ -26,8 +17,8 @@ class Jqmain extends MY_Controller {
 	public function right_conter()
 	{
 		$time = time();                  //当前时间
-		$hhgy = strtotime("7:00:00 ");   //可打卡上班时间
-		$ghgy = strtotime("17:30:00 ");  //可打卡下班时间
+		$hhgy = strtotime(SYS_UP_WORK);   //可打卡上班时间
+		$ghgy = strtotime(SYS_DO_WORK);  //可打卡下班时间
 		$uid = $this->session->userdata('id');
 		$this->db->where('uid='.$uid.' AND DATE_FORMAT(FROM_UNIXTIME(up_work),\'%Y%m%d\')=DATE_FORMAT(NOW(),\'%Y%m%d\')');
 		$query = $this->db->get('work');
@@ -74,8 +65,8 @@ class Jqmain extends MY_Controller {
 	public function to_work()
 	{
 		$time = time();                  //当前时间
-		$hhgy = strtotime("7:00:00 ");   //可打卡上班时间
-		$ghgy = strtotime("17:30:00 ");  //可打卡下班时间
+		$hhgy = strtotime(SYS_UP_WORK);   //可打卡上班时间
+		$ghgy = strtotime(SYS_DO_WORK);  //可打卡下班时间
         $getip = $this->get_password->get_client_ip();
 		$uid = $this->session->userdata('id');
 		$this->db->where('uid='.$uid.' AND DATE_FORMAT(FROM_UNIXTIME(up_work),\'%Y%m%d\')=DATE_FORMAT(NOW(),\'%Y%m%d\')');
@@ -108,8 +99,8 @@ class Jqmain extends MY_Controller {
 	public function off_work()
 	{
 		$time = time();                  //当前时间
-		$hhgy = strtotime("7:00:00 ");   //可打卡上班时间
-		$ghgy = strtotime("17:30:00 ");  //可打卡下班时间
+		$hhgy = strtotime(SYS_UP_WORK);   //可打卡上班时间
+		$ghgy = strtotime(SYS_DO_WORK);  //可打卡下班时间
         $getip = $this->get_password->get_client_ip();
 		$uid = $this->session->userdata('id');
 		$this->db->where('uid='.$uid.' AND DATE_FORMAT(FROM_UNIXTIME(up_work),\'%Y%m%d\')=DATE_FORMAT(NOW(),\'%Y%m%d\')');
@@ -142,7 +133,7 @@ class Jqmain extends MY_Controller {
 	public function ajax_up()
 	{
 		$uid = $this->input->get_post('uid');
-		$mess = $this->pufun->trimall($this->input->get_post('mess'));
+		$mess = $this->pu_fun->trimall($this->input->get_post('mess'));
 		$data = array(
 			'description' => $mess,
 		);
@@ -158,7 +149,7 @@ class Jqmain extends MY_Controller {
 		$psize = 31;    //每页显示7条信息
 		$uid = $this->session->userdata('id');
 		$this->db->where('uid='.$uid.' AND DATE_FORMAT(FROM_UNIXTIME(up_work),\'%Y%m\')=DATE_FORMAT(NOW(),\'%Y%m\')');
-		$data['list'] = $this->pufun->article_page('work',$psize,$offset);
+		$data['list'] = $this->pu_fun->article_page('work',$psize,$offset);
 
 		// 加载分页库
 		$this->load->library('pagination');
@@ -185,7 +176,7 @@ class Jqmain extends MY_Controller {
         if($staid==1 || $staid==0 && $staid!=''){
             $this->db->where('state',$staid);
         }
-		$data['list'] = $this->pufun->article_page('admin_user',$psize,$offset,'id');
+		$data['list'] = $this->pu_fun->article_page('admin_user',$psize,$offset,'id');
 
 		// 加载分页库
 		$this->load->library('pagination');
@@ -212,10 +203,10 @@ class Jqmain extends MY_Controller {
 	{
 		$password = $this->input->post('password');
 		$password2 = $this->input->post('password2');
-		$username = $this->pufun->trimall($this->input->post('username'));
+		$username = $this->pu_fun->trimall($this->input->post('username'));
         $entry = strtotime($this->input->post('entry'));
 		$this->db->where('username',$username);
-		$res = $this->pufun->showtable('admin_user');
+		$res = $this->pu_fun->showtable('admin_user');
 		$rtun = '  <a href="'.base_url().'jqmain/adduser" class="close-btn exit">返回添加</a>';
 		if($res)
 		{
@@ -260,9 +251,42 @@ class Jqmain extends MY_Controller {
 	public function edit()
 	{
 		$this->db->where('id',$this->input->get_post('id'));
-		$data['val'] = $this->pufun->showtable('admin_user');
+		$data['val'] = $this->pu_fun->showtable('admin_user');
 		$this->load->view('edit',$data);
 	}
+    //修改密码
+    public function up_pass()
+    {
+        if($this->input->post('submit'))
+        {
+            $password = $this->input->post('password');
+            $password2 = $this->input->post('password2');
+            if($password != $password2 || $password == '')
+            {
+                echo '<script>alert("密码不一致，或者为空！");window.history.back();</script>';
+                die;
+            }
+            if($password != '')
+            {
+                if($password == $password2)
+                {
+                    $password = $this->get_password->password_set_hash($password);
+                }
+                else
+                {
+                    echo '<script>alert("密码不一致！");window.history.back();</script>';
+                    die;
+                }
+            }
+            $arr = array(
+                'password' => $password
+            );
+            $this->db->where('id',$this->session->id);
+            $this->db->update('admin_user', $arr);
+            echo '<script>alert("密码已更新成功！");window.history.back();</script>';
+        }
+        $this->load->view('up_pass');
+    }
 	//执行修改操作
 	public function upedit()
 	{
@@ -320,7 +344,7 @@ class Jqmain extends MY_Controller {
 	public function del()
 	{
 		$uid = $this->input->get_post('id');
-		$this->pufun->onedel('admin_user',$uid);
+		$this->pu_fun->onedel('admin_user',$uid);
 		header('location:'.base_url().'jqmain/admin');
 	}
     	//考勤表
@@ -341,10 +365,10 @@ class Jqmain extends MY_Controller {
 		{
 			$this->db->where('up_work >='.$start_today.' AND  up_work <= '.$end_today);
 		}
-		$data['list'] = $this->pufun->article_jion($table,$table2,'on a.id = b.uid',$psize,$offset);
+		$data['list'] = $this->pu_fun->article_jion($table,$table2,'on a.id = b.uid',$psize,$offset);
         $this->db->where('id !=1');
         $this->db->where('state',1);
-		$data['user'] = $this->pufun->showtable('admin_user');
+		$data['user'] = $this->pu_fun->showtable('admin_user');
 		// 加载分页库
 		$this->load->library('pagination');
 		$config['base_url'] = './attend_user?uid='.$uid;  //分页URL

@@ -25,8 +25,8 @@ html{*overflow:auto;}
 .hd-top .setting .setting-skin i.arrow-icon{right:12px;top:12px;width:7px; height:4px; background:url(../../img/skin_/skinxl.png);}
 .hd-top .setting .setting-skin:hover i.arrow-icon{background-position:-7px 0;}
 .hd-top .setting .setting-skin .switch-bar{width:82px;height:29px; background:url(../../img/skin_/skin-bg.png);}
-.hd-top .setting .setting-main{ float:left; width:152px;}
-.hd-top .setting .setting-main li{ float:left; width:38px;text-align:center; }
+.hd-top .setting .setting-main{ float:left;}
+.hd-top .setting .setting-main li{ float:left; text-align:center; margin:5px;}
 .hd-top .setting .setting-main li a{color:#fff;}
 .hd-top .setting .setting-main li a:hover{text-decoration:none;color:#000;}
 .hd-top .setting .setting-main li a.close-btn{ float:left; margin:16px 0 0 11px; width:14px; height:14px;background:url(../../img/skin_/quit.png);}

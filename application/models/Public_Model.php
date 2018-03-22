@@ -30,7 +30,29 @@ class Public_Model extends CI_Model
         $query = $this->db->get($table);
         return $query->result();
     }
+    /**
+     * @param string $path  URL路径及参数
+     * @param string $table 查询的数据表
+     * @param int $p_size   要显示的数据数量
+     * @return mixed
+     */
+    public function page($path='',$table='',$p_size=10)
+    {
+        // 加载分页库
+        $this->load->library('pagination');
+        $config['base_url'] = './'.$path;  //分页URL
 
+        $config['total_rows'] = $this->db->count_all_results($table);
+        $config['per_page'] = $p_size;  //每页显示的数量
+        $config['num_links'] = 3;   //表示显示3个带有连接的数字
+        $config['use_page_numbers'] = TRUE;  //设置false（?pg=10 表示第一页）
+        $config['query_string_segment'] = 'pg';  //改变页码,默认pre_page
+        //打开动态分页　?pg
+        $config['page_query_string'] = TRUE;
+        $this->pagination->initialize($config);  //载入页码器
+        $page = $this->pagination->create_links();  //页码连接
+        return $page;
+    }
     /**
      * @param $table  查询表名
      * @param int $off  显示几条

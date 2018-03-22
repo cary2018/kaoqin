@@ -8,7 +8,7 @@
 <link rel="stylesheet" type="text/css" href="<?php echo base_url();?>css/skin_/nav.css" />
 <script type="text/javascript" src="<?php echo base_url();?>js/jquery.js"></script>
 <script type="text/javascript" src="<?php echo base_url();?>js/global.js"></script>
-<title>底部内容页</title>
+<title>左侧菜单</title>
 </head>
 
 <body>
@@ -41,23 +41,26 @@
                 <li class="nav-li current">
                 	<a href="javascript:;" class="ue-clear"><i class="nav-ivon"></i><span class="nav-text">用户信息管理</span></a>
                 	<ul class="subnav">
-                    	<li class="subnav-li current" href="<?php echo base_url();?>jqmain/right_conter" data-id="1">
+                    	<li class="subnav-li current" href="/jqmain/right_conter" data-id="1">
 							<a href="javascript:;" class="ue-clear"><i class="subnav-icon"></i><span class="subnav-text">打卡上班</span></a>
 						</li>
-                        <li class="subnav-li" href="<?php echo base_url();?>jqmain/attendance" data-id="2">
+                        <li class="subnav-li" href="/jqmain/attendance" data-id="2">
 							<a href="javascript:;" class="ue-clear"><i class="subnav-icon"></i><span class="subnav-text">当月考勤</span></a>
 						</li>
+                        <li class="subnav-li" href="/jqmain/up_pass" data-id="22">
+							<a href="javascript:;" class="ue-clear"><i class="subnav-icon"></i><span class="subnav-text">修改密码</span></a>
+						</li>
 						<?php if($this->session->userdata('username')=='admin'){?>
-                        <li class="subnav-li" href="" data-id="3">
-							<a href="javascript:;" class="ue-clear"><i class="subnav-icon"></i><span class="subnav-text">公司通信录</span></a>
+                        <li class="subnav-li" href="/systems" data-id="3">
+							<a href="javascript:;" class="ue-clear"><i class="subnav-icon"></i><span class="subnav-text">系统设置</span></a>
 						</li>
                         <li class="subnav-li" href='' data-id="4">
 							<a href="javascript:;" class="ue-clear"><i class="subnav-icon"></i><span class="subnav-text">工作日报</span></a>
 						</li>
-						<li class="subnav-li" href='<?php echo base_url();?>jqmain/admin' data-id="15">
+						<li class="subnav-li" href='/jqmain/admin' data-id="15">
 							<a href="javascript:;" class="ue-clear"><i class="subnav-icon"></i><span class="subnav-text">员工列表</span></a>
 						</li>
-						<li class="subnav-li" href='<?php echo base_url();?>jqmain/attend_user' data-id="16">
+						<li class="subnav-li" href='/jqmain/attend_user' data-id="16">
 							<a href="javascript:;" class="ue-clear"><i class="subnav-icon"></i><span class="subnav-text">员工考勤表</span></a>
 						</li>
 						<?php }?>
